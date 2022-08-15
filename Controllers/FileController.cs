@@ -1,28 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using DropBoxApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DropBoxApp.Models;
 using File = DropBoxApp.Models.File;
 
 namespace DropBoxApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class FilesController : ControllerBase
+    public class FileController : ControllerBase
     {
         private readonly FileContext _context;
 
-        public FilesController(FileContext context)
+        public FileController(FileContext context)
         {
             _context = context;
         }
-
+        #region
         // GET: api/Files
-        [HttpGet]
+        /*[HttpGet]
         public async Task<ActionResult<IEnumerable<File>>> GetFiles()
         {
           if (_context.Files == null)
@@ -30,16 +25,17 @@ namespace DropBoxApp.Controllers
               return NotFound();
           }
             return await _context.Files.ToListAsync();
-        }
+        }*/
+        #endregion
 
         // GET: api/Files/5
         [HttpGet("{id}")]
         public async Task<ActionResult<File>> GetFile(long id)
         {
-          if (_context.Files == null)
-          {
-              return NotFound();
-          }
+            if (_context.Files == null)
+            {
+                return NotFound();
+            }
             var file = await _context.Files.FindAsync(id);
 
             if (file == null)
@@ -50,36 +46,20 @@ namespace DropBoxApp.Controllers
             return file;
         }
 
-        // PUT: api/Files/5
+        #region
+        /*// PUT: api/Files/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFile(long id, File file)
+        [HttpPut]
+        public async Task<IActionResult> PutFile(File file)
         {
-            if (id != file.Id)
-            {
-                return BadRequest();
-            }
-
             _context.Entry(file).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FileExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return NoContent();
-        }
+        }*/
+        #endregion
+
 
         // POST: api/Files
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -97,8 +77,9 @@ namespace DropBoxApp.Controllers
             return CreatedAtAction(nameof(GetFile), new { id = file.Id }, file);
         }
 
+        #region
         // DELETE: api/Files/5
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFile(long id)
         {
             if (_context.Files == null)
@@ -115,11 +96,12 @@ namespace DropBoxApp.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
+        }*/
 
         private bool FileExists(long id)
         {
             return (_context.Files?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        #endregion
     }
 }
